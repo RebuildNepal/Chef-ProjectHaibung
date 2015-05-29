@@ -46,5 +46,6 @@ default['Chef-ProjectHaibung']['app']['haibung'] = {
   port: '80',
   branch: 'devel',
   server_name: 'ProjectHaibung.com',
-  repository: 'https://github.com/RebuildNepal/ProjectHaibung.git'
+  repository: 'https://github.com/RebuildNepal/ProjectHaibung.git',
+  socket: '/var/run/php-fpm-haibung.sock'
 }

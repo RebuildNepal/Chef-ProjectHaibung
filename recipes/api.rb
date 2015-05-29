@@ -33,6 +33,28 @@ node['Chef-ProjectHaibung']['packages'].each do |pkg|
   end
 end
 
+# Start php-fpm
+service 'php-fpm' do
+  action :start
+end
+
+# Create php-fpm pool
+template "/etc/php-fpm.d/#{app_name}.conf" do
+  source 'php-fpm/config.erb'
+  owner 'root'
+  group 'root'
+  mode '644'
+  variables(
+    'poolname'      => app_name,
+    'listen'        => app_params['socket'],
+    'listen_user'   => node['nginx']['user'],
+    'listen_group'  => node['nginx']['group'],
+    'user'          => app_params['user'],
+    'group'         => app_params['user']
+  )
+  notifies :restart, 'service[php-fpm]', :delayed
+end
+
 addrs = node[:network][:interfaces][:eth0][:addresses]
 public_net = addrs.select { |addr, info| info['family'] == 'inet' }
 public_ip = public_net.keys[0]
