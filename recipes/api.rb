@@ -58,7 +58,7 @@ end
 addrs = node[:network][:interfaces][:eth0][:addresses]
 public_net = addrs.select { |addr, info| info['family'] == 'inet' }
 public_ip = public_net.keys[0]
-node.default['Chef-ProjectHaibung']['nginx_server_names'] = ['projecthaibung.*', node['fqdn'], public_ip]
+node.default['Chef-ProjectHaibung']['nginx_server_names'] = "projecthaibung.* #{public_ip}"
 
 template ::File.join(node['nginx']['dir'], 'sites-available/haibung.conf') do
   source 'nginx/php-vhost.erb'
