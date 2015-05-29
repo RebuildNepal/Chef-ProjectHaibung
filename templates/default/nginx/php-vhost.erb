@@ -1,7 +1,7 @@
 server {
     listen 80;
     server_name <%= node.default['Chef-ProjectHaibung']['nginx_server_names'] %>;
-    access_log <%= node['nginx']['log_dir'] %>/haibung.access.log
+    access_log <%= node['nginx']['log_dir'] %>/haibung.access.log;
     error_log <%= node['nginx']['log_dir'] %>/haibung.error.log;
     root /var/www/haibung/current;
 
