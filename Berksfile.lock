@@ -10,7 +10,7 @@ DEPENDENCIES
   yum
 
 GRAPH
-  Chef-ProjectHaibung (0.8.0)
+  Chef-ProjectHaibung (0.1.1)
     application (>= 0.0.0)
     mysql (>= 0.0.0)
     nginx (>= 0.0.0)
