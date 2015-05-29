@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-data = Chef::EncryptedDataBagItem.load('vault', 'secrets')
+data = Chef::EncryptedDataBagItem.load('haibung', 'secrets')
 
 user data['user']['name'] do
   home data['user']['home']
@@ -29,7 +29,6 @@ directory "#{data['user']['home']}/.ssh" do
   owner data['user']['name']
 end
 
-# Suraj ssh key
 file "#{data['user']['home']}/.ssh/authorized_keys" do
   action :create
   owner data['user']['name']

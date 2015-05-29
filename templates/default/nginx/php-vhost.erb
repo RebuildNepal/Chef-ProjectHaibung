@@ -1,0 +1,19 @@
+server {
+    listen 80;
+    server_name <%= node.default['Chef-ProjectHaibung']['nginx_server_names'] %>;
+    access_log <%= node['nginx']['log_dir'] %>/haibung.access.log
+    error_log <%= node['nginx']['log_dir'] %>/haibung.error.log;
+    root /var/www/haibung/current;
+
+    location / {    
+        index index.html index.htm index.php;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass  127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME /srv/www/mysite/public_html$fastcgi_script_name;
+    }
+}

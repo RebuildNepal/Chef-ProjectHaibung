@@ -1,7 +1,7 @@
 # Encoding: utf-8
 #
 # Cookbook Name:: Chef-ProjectHaibung
-# Recipe:: default
+# Recipe:: mysql
 #
 # Copyright 2015, Suraj Thapa
 #
@@ -20,31 +20,11 @@
 
 data = Chef::EncryptedDataBagItem.load('haibung', 'secrets')
 
-default['Chef-ProjectHaibung']['packages'] = %w(
-  git
-  vim
-  php55u-fpm
-  php55u-common
-  php55u-mcrypt
-  php55u-pear
-  php55u-cli
-  php55u-curl
-  php55u-fpm
-  php55u-gd
-  php55u-imap
-  php55u-json
-  php55u-mongo
-  php55u-readline
-  php55u-xmlrpc
-  php55u-pdo
-  php55u-mysql
-)
-
-default['Chef-ProjectHaibung']['app']['haibung'] = {
-  user: data['user']['name'],
-  root_path: '/var/www/haibung',
-  port: '80',
-  branch: 'devel',
-  server_name: 'ProjectHaibung.com',
-  repository: 'https://github.com/RebuildNepal/ProjectHaibung.git'
-}
+mysql_service 'haibung' do
+  version '5.7'
+  bind_address '0.0.0.0'
+  port '3306'
+  data_dir '/data'
+  initial_root_password data['db']['password']
+  action [:create, :start]
+end

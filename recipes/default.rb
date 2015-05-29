@@ -20,29 +20,5 @@
 
 include_recipe 'rackspace_iptables::default'
 
-# Required packages to install
-packages = %w(
-  php
-  git
-  vim
-  httpd
-)
-
-packages.each do |pkg|
-  package pkg do
-    action :install
-  end
-end
-
-# Create auth user
-user 'auth' do
-  action :create
-end
-
-# Start httpd service
-service 'httpd' do
-  action :start
-end
-
 add_iptables_rule('INPUT', '-p tcp -m tcp --dport 80 -j ACCEPT')
 add_iptables_rule('INPUT', '-p tcp -m tcp --dport 443 -j ACCEPT')
