@@ -44,8 +44,18 @@ default['Chef-ProjectHaibung']['app']['haibung'] = {
   user: data['user']['name'],
   root_path: '/var/www/haibung',
   port: '80',
-  branch: 'devel',
-  server_name: 'ProjectHaibung.com',
+  branch: 'master',
+  server_name: 'projecthaibung.*',
   repository: 'https://github.com/RebuildNepal/ProjectHaibung.git',
   socket: '/var/run/php-fpm-haibung.sock'
+}
+
+default['Chef-ProjectHaibung']['app']['haibung-test'] = {
+  user: data['user']['name'],
+  root_path: '/var/www/haibung-test',
+  port: '80',
+  branch: 'devel',
+  server_name: 'testprojecthaibung.*',
+  repository: 'https://github.com/RebuildNepal/ProjectHaibung.git',
+  socket: '/var/run/php-fpm-haibung-test.sock'
 }

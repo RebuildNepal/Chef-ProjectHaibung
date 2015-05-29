@@ -1,7 +1,7 @@
 # Encoding: utf-8
 #
 # Cookbook Name:: ProjectHaibung
-# Recipe:: api
+# Recipe:: api_test
 #
 # Copyright 2015, Suraj Thapa
 #
@@ -17,26 +17,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe 'yum-ius::default'
-include_recipe 'nginx::default'
-
-app_name = 'haibung'
+app_name = 'haibung-test'
 app_params = node['Chef-ProjectHaibung']['app'][app_name]
-
-user app_params['user'] do
-  action :create
-end
-
-node['Chef-ProjectHaibung']['packages'].each do |pkg|
-  yum_package pkg do
-    action :install
-  end
-end
-
-# Start php-fpm
-service 'php-fpm' do
-  action :start
-end
 
 # Create php-fpm pool
 template "/etc/php-fpm.d/#{app_name}.conf" do
@@ -55,13 +37,18 @@ template "/etc/php-fpm.d/#{app_name}.conf" do
   notifies :restart, 'service[php-fpm]', :delayed
 end
 
-template ::File.join(node['nginx']['dir'], 'sites-available/haibung.conf') do
+addrs = node[:network][:interfaces][:eth0][:addresses]
+public_net = addrs.select { |addr, info| info['family'] == 'inet' }
+public_ip = public_net.keys[0]
+server_name = "#{app_params['server_name']} #{public_ip}"
+
+template ::File.join(node['nginx']['dir'], 'sites-available/', "#{app_name}.conf") do
   source 'nginx/php-vhost.erb'
   owner node['nginx']['user']
   group node['nginx']['group']
   mode '644'
   variables(
-    'server_name' => app_params['server_name'],
+    'server_name' => server_name,
     'app_name' => app_name,
     'app_config' => app_params
   )

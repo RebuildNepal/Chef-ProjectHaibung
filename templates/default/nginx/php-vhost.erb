@@ -1,16 +1,16 @@
 server {
     listen 80;
-    server_name <%= node.default['Chef-ProjectHaibung']['nginx_server_names'] %>;
-    access_log <%= node['nginx']['log_dir'] %>/haibung.access.log;
-    error_log <%= node['nginx']['log_dir'] %>/haibung.error.log;
-    root /var/www/haibung/current;
+    server_name <%= @server_name %>;
+    access_log <%= node['nginx']['log_dir'] %>/<%= @app_name %>.access.log;
+    error_log <%= node['nginx']['log_dir'] %>/<%= @app_name %>.error.log;
+    root <%= @app_config['root_path'] %>/current;
 
     location / {    
         index index.html index.htm index.php;
     }
 
     location ~ \.php$ {
-        fastcgi_pass  unix:/var/run/php-fpm-haibung.sock;
+        fastcgi_pass  unix:<%= @app_config['socket'] %>;
         fastcgi_index /index.php;
 
         include /etc/nginx/fastcgi_params;
@@ -19,5 +19,5 @@ server {
         fastcgi_param PATH_INFO       $fastcgi_path_info;
         fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    }
+    } 
 }
