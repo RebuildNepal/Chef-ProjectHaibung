@@ -40,6 +40,7 @@ default['Chef-ProjectHaibung']['packages'] = %w(
   php55u-mysql
 )
 default['nginx']['default_site_enabled'] = false
+default['Chef-ProjectHaibung']['cron']['chef']['min'] = 5
 default['Chef-ProjectHaibung']['app']['haibung'] = {
   user: data['user']['name'],
   root_path: '/var/www/haibung',

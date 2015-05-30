@@ -28,3 +28,4 @@ mysql_service 'haibung' do
   initial_root_password data['db']['password']
   action [:create, :start]
 end
+

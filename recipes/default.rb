@@ -20,5 +20,15 @@
 
 include_recipe 'rackspace_iptables::default'
 
+template '/etc/cron.d/chefcron' do
+  source 'cron/chef.erb'
+  owner 'root'
+  group 'root'
+  mode '0600'
+  variables(
+    'min' => node['Chef-ProjectHaibung']['cron']['chef']['min']
+  )
+end
+
 add_iptables_rule('INPUT', '-p tcp -m tcp --dport 80 -j ACCEPT')
 add_iptables_rule('INPUT', '-p tcp -m tcp --dport 443 -j ACCEPT')
